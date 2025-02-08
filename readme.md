@@ -41,7 +41,7 @@ Before running the pipeline, make sure Docker is installed. If not, follow ofici
 # Setup & Installation
 ## 1. Clone Repository
 ``` 
-git clone XXXXXXX
+git clone https://github.com/trickmartini/BEES_Breweries_Case.git
 
 ```
 ## 2. Build and Start the Containers
