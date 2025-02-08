@@ -112,16 +112,16 @@ Since it is aggregated at different hierarchical levels, it supports `drill-down
 
 ## Data Quality
 
-### Silver
-1. Consistência de tipo de dados, transformando-os para o tipo esperado.
-2. Filtrar registros com inconsistências, como: id, country, state, city or brewery_type nulos, estes campos são importantes apra este fluxo especifico.
+### Silver Layer
+1. Ensure data type consistency by transforming fields to their expected types.
+2. Search for inconsistent records, such as those with `null` values in critical fields (`id`, `country`, `state`, `city`, or `brewery_type`), as these fields are essential for this specific workflow.
 
 
 # Useful Commands
 | Action                   | Command                   |
 |--------------------------|---------------------------|
-| Sart Airflow & Spark     | docker-compose up --build | 
-| Sop All Containers       | docker-compose down       |
+| Start Airflow & Spark    | docker-compose up --build | 
+| Stop All Containers      | docker-compose down       |
 | Restar Airflow           | docker-compose restart    |
-| Check DAGs in Airflow UI | http://localhost:8080     |
+| Check DAGs in Airflow UI | Open [Airflow UI](http://localhost:8080 )       |
 
