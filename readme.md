@@ -71,6 +71,29 @@ this will:
    ```
 3. Click Save
 
+## 5. Grafana
+### Configure Aiflow connection on Grafana
+1. In Grafana UI, go to:
+> Connections > Data Sources > Add new data source
+2. Search for PostgreSQL
+3. Fill in the following credentials:
+```
+Host URL: {full postgres container name, check it in Docker.}:5432
+Database name: airflow
+username: airflow
+password: ariflow
+TLS/SSL Mode: disable
+Version: 13
+```
+4. Click Save & test
+
+### Create monitoring dashboard 
+To import the monitoring dashboard, execute the following commands in the terminal:
+```bash
+cd grafana
+./import_dashboard_grafana.sh
+```
+This will automatically configure the Grafana dashboard for monitoring the pipeline execution.
 # Running Pipeline
 ## Triggering the pipeline via Airflow Web Interface
 You can manually trigger the pipeline using the Airflow Web Interface.
@@ -82,13 +105,14 @@ You can manually trigger the pipeline using the Airflow Web Interface.
 ### Monitoring Executions & Logs
 * To track execution progress, go to the `Graph` view. 
 * Click on any step to see its detailed logs under the `Logs` section.
-
+* Use Grafana dashboards to monitor the pipeline's execution metrics and system performance in real time. Check how to use it in the Monitoring and DAta Quality section.
 # Pipeline Architecture
 ## Overall
-![architecture](assets/BEES.jpg)
+![architecture](assets/BEESv2.jpg)
 
 This ETL process retrieves data from the Open Brewery DB API and process it through the Bronze, Silver and Gold layers.
-Data available in Gold layer can be used for data visualization tools(e.g., Power BI, Tableau) or queried via SQL interface. 
+Data available in Gold layer can be used for data visualization tools(e.g., Power BI, Tableau) or queried via SQL interface.
+Additionally, Grafana dashboards are utilized for monitoring. 
 ## Bronze Process
 This Process fetches data from the API, and write the answer in the Bronze layer in its raw format (JSON).
 
@@ -109,6 +133,15 @@ Since it is aggregated at different hierarchical levels, it supports `drill-down
 
 
 # Monitoring and Data Quality
+
+## Monitoring
+For pipeline monitoring purpose, utilize the **Grafana dashboards**. These dashboards provide a list with available DAGs, the  statues of their last executions, and the number os successful and failed executions over a specific period of time. 
+### How to access Grafana
+1. Open Grafana UI, go to: http://localhost:3000/
+2. Log in using the following credentials:
+   * user: `admin`
+   * password: `admin`
+3. Navigate to `Dashboards > Breweries Monitoring` to view real-time execution metrics.
 
 ## Data Quality
 
