@@ -1,6 +1,7 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col
 from pyspark.sql.types import StructType, StructField, StringType, DoubleType
+
 # silver validation
 # This process verifies the integrity of the Silver layer table, by checking for inconsistent data.
 # If any records contain null values in critical fields, an error is raised to prevent downstream issues.

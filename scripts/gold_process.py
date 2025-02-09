@@ -21,5 +21,5 @@ detailed_location.show()
 
 detailed_location.write.mode("overwrite").partitionBy("country").parquet(output_path)
 
-logger.info(f"Data wrote in {output_path}detailed_location")
+logger.info(f"Data wrote in: {output_path}")
 

@@ -13,8 +13,6 @@ raw_path = f"/opt/airflow/output/raw/brew.json"
 output_path = f"/opt/airflow/output/silver/breweries"
 
 # Process
-
-#todo: add cast on read file.
 schema = StructType([
     StructField("country", StringType(), True),
     StructField("id", StringType(), True),
@@ -39,7 +37,7 @@ logger.info(f"Reading {raw_path}")
 raw_data = spark.read.json(raw_path, schema=schema)
 
 silver_data = (raw_data
-# cast latitude and longitude as double to maximize compatibility with BI tools, for geographical KPI.
+               # cast latitude and longitude as double to maximize compatibility with BI tools, for geographical KPI.
                .withColumn("latitude", col("latitude").cast(DoubleType()))
                .withColumn("longitude", col("longitude").cast(DoubleType()))
                .drop(col("street"))  # street has the same content as address_1, opt for keep address_1 for
