@@ -21,6 +21,8 @@ The processed data is stored in `parquet` files.
 BEES_Breweries_Case/
 │── dags/                    # Airflow DAGs
 │   ├── spark_airflow.py     # DAG for the Breweries ETL process 
+│── grafana/                 # Grafana files
+│   ├──dashboards/           # Grafana dashboards scripts 
 │── logs/                    # Logs generates by Airflow
 │── output/                  # output files from ETL process
 │── scripts/                 # Pyspark scripts for data processing
