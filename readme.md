@@ -69,7 +69,8 @@ this will:
    Connection Type: Spark
    Host: spark://{full spark-master container name, check it in Docker.}
    Port: 7077
-   Deploy mode: spark-submit
+   Deploy mode: client
+   Spark binary: spark-submit
    ```
 3. Click Save
 
@@ -114,7 +115,15 @@ You can manually trigger the pipeline using the Airflow Web Interface.
 
 This ETL process retrieves data from the Open Brewery DB API and process it through the Bronze, Silver and Gold layers.
 Data available in Gold layer can be used for data visualization tools(e.g., Power BI, Tableau) or queried via SQL interface.
-Additionally, Grafana dashboards are utilized for monitoring. 
+Additionally, Grafana dashboards are utilized for monitoring.
+
+## Technology stak
+This project utilizes PySpark for ETL processing due to its high performance, especially when handling large-scale data in a distributed and efficient manner. PySpark also provides scalability, allowing the process to adapt seamlessly to different workloads while ensuring flexibility and robustness.
+
+For workflow orchestration, Apache Airflow was chosen as it is a comprehensive orchestration tool with strong integration capabilities across various technologies. Airflow provides advanced features such as task dependency management, execution monitoring, and dynamic pipeline creation, offering greater control and automation over ETL processes.
+
+The combination of Airflow and PySpark ensures a scalable and reliable execution environment, enabling scheduling, tracking, and debugging of data workflows efficiently. Additionally, this approach facilitates integration with storage, visualization, and monitoring tools, delivering a complete and maintainable data pipeline solution.
+
 ## Bronze Process
 This Process fetches data from the API, and write the answer in the Bronze layer in its raw format (JSON).
 
@@ -137,7 +146,21 @@ Since it is aggregated at different hierarchical levels, it supports `drill-down
 # Monitoring and Data Quality
 
 ## Monitoring
-For pipeline monitoring purpose, utilize the **Grafana dashboards**. These dashboards provide a list with available DAGs, the  statues of their last executions, and the number os successful and failed executions over a specific period of time. 
+To enhance pipeline monitoring and observability, Grafana was integrated into the architecture. Grafana was chosen for its real-time visualization capabilities, allowing efficient tracking of ETL workflows and system performance. It provides a user-friendly interface with custom dashboards that display critical execution metrics, ensuring better control and decision-making regarding the pipeline’s health.
+
+Dashboards Overview
+Three key dashboards were created to monitor the Airflow pipelines:
+
+1. DAG Execution History Dashboard
+* Displays all DAG executions within a selected time period.
+* Helps analyze execution patterns and identify potential bottlenecks.
+2. Latest DAG Execution Status Dashboard
+* Shows the latest execution status of each DAG in the system.
+* Useful for quickly identifying failed or pending DAGs that need attention.
+3. Execution Success & Failure Trends Dashboard
+* Tracks the number of successful and failed DAG executions over time.
+* Helps detect anomalies or trends that could indicate issues with data ingestion, transformations, or system performance.
+
 ### How to access Grafana
 1. Open Grafana UI, go to: http://localhost:3000/
 2. Log in using the following credentials:
@@ -150,6 +173,7 @@ For pipeline monitoring purpose, utilize the **Grafana dashboards**. These dashb
 ### Silver Layer
 1. Ensure data type consistency by transforming fields to their expected types.
 2. Search for inconsistent records, such as those with `null` values in critical fields (`id`, `country`, `state`, `city`, or `brewery_type`), as these fields are essential for this specific workflow.
+3. Since this validation is part of the Airflow DAG execution process, any test failures result in a failed DAG execution. This ensures that incorrect or incomplete data is not delivered to subsequent layers, maintaining data integrity and reliability.
 
 
 # Useful Commands
