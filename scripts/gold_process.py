@@ -26,8 +26,6 @@ if detailed_location.rdd.isEmpty():
     logger.error("Output dataframe is empty. No process will be performed.")
     raise ValueError("Output dataframe is empty. No data to write.")
 
-detailed_location.show()
-
 detailed_location.write.mode("overwrite").partitionBy("country").parquet(output_path)
 
 logger.info(f"Data written to: {output_path}")
