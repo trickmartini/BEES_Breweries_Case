@@ -173,13 +173,20 @@ Three key dashboards were created to monitor the Airflow pipelines:
    * password: `admin`
 3. Navigate to `Dashboards > Breweries Monitoring` to view real-time execution metrics.
 
-## Data Quality
+## Data Quality & Error Handling
+## Bronze Layer
+1. Implement API retry logic, limiting to 3 attempts to ensure reliability in case of temporary failures. 
 
 ### Silver Layer
 1. Ensure data type consistency by transforming fields to their expected types.
-2. Search for inconsistent records, such as those with `null` values in critical fields (`id`, `country`, `state`, `city`, or `brewery_type`), as these fields are essential for this specific workflow.
-3. Since this validation is part of the Airflow DAG execution process, any test failures result in a failed DAG execution. This ensures that incorrect or incomplete data is not delivered to subsequent layers, maintaining data integrity and reliability.
+2. Validate input data by checking if the DataFrame is empty before proceeding.
+3. Validate output data by ensuring the transformed DataFrame is not empty before writing.
+4. Identify and handle inconsistent records, such as those with `null` values in critical fields (`id`, `country`, `state`, `city`, or `brewery_type`), as these fields are essential for this specific workflow.
+5. Since this validation is part of the Airflow DAG execution process, any test failures result in a failed DAG execution. This ensures that incorrect or incomplete data is not delivered to subsequent layers, maintaining data integrity and reliability.
 
+## Gold Layer
+1. Validate input data by checking if the DataFrame is empty before proceeding.
+2. Check if the resulting DataFrame is empty before writing, preventing unnecessary writes of incomplete or missing data.
 
 # Useful Commands
 | Action                   | Command                   |

@@ -12,7 +12,7 @@ logger = spark._jvm.org.apache.log4j.LogManager.getLogger("breweries_transformat
 raw_path = f"/opt/airflow/output/raw/brew.json"
 output_path = f"/opt/airflow/output/silver/breweries"
 
-# Process
+# Define Schema for structured data ingestion
 schema = StructType([
     StructField("country", StringType(), True),
     StructField("id", StringType(), True),
@@ -35,6 +35,9 @@ schema = StructType([
 #read data from raw layer
 logger.info(f"Reading {raw_path}")
 raw_data = spark.read.json(raw_path, schema=schema)
+if raw_data.rdd.isEmpty():
+    logger.warning("Raw data is empty. No process will be performed.")
+    raise ValueError("Raw data is empty.")
 
 silver_data = (raw_data
                # cast latitude and longitude as double to maximize compatibility with BI tools, for geographical KPI.
@@ -43,6 +46,9 @@ silver_data = (raw_data
                .drop(col("street"))  # street has the same content as address_1, opt for keep address_1 for
                # compatibility with address_2 and 3
                )
+if silver_data.rdd.isEmpty():
+    logger.warning("Silver data is empty. No data to be writen.")
+    raise ValueError("Silver data is empty.")
 
 silver_data.write.mode("overwrite").partitionBy("country").parquet(output_path)
 logger.info(f"Data saved in silver layer: {output_path}")
