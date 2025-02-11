@@ -20,7 +20,6 @@ detailed_location = (
     silver_data
     .groupBy("country", "state", "city", "brewery_type")
     .count()
-    .orderBy("country", "state", "city")
 )
 
 if detailed_location.rdd.isEmpty():
