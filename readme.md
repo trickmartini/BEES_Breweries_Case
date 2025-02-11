@@ -42,25 +42,30 @@ Before running the pipeline, make sure Docker is installed. If not, follow ofici
 
 # Setup & Installation
 ## 1. Clone Repository
-``` 
+```bash
 git clone https://github.com/trickmartini/BEES_Breweries_Case.git
-
 ```
-## 2. Build and Start the Containers
+## 2. Create required directories `.env` File
+Run the following command in the terminal:
+```bash
+mkdir -p ./dags ./logs ./plugins ./config
+echo -e "AIRFLOW_UID=$(id -u)" > .env
 ```
+## 3. Build and Start the Containers
+```bash
 docker-compose up -d --build
 ```
-this will: 
+This will: 
 * Build Airflow image + PySpark dependencies.
 * Start Airflow and Spark containers.
 
-## 3. Access Airflow UI
+## 4. Access Airflow UI
 1. Open your browser and navigate to: http://localhost:8080
 2. using the following credentials:
 * Username: `airflow`
 * Password: `airflow`
 
-## 4. Configure spark connection
+## 5. Configure spark connection
 1. In Airflow UI, go to:
 > Admin -> Connections -> create connection (click the "+" button).
 2. Fill in the following credentials:
@@ -74,7 +79,7 @@ this will:
    ```
 3. Click Save
 
-## 5. Grafana
+## 6. Grafana
 ### Configure Aiflow connection on Grafana
 1. In Grafana UI, go to:
 > Connections > Data Sources > Add new data source

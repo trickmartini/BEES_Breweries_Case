@@ -34,6 +34,7 @@ x-airflow-common:
 
 x-spark-common: &spark-common
   image: bitnami/spark:latest
+  user: "${AIRFLOW_UID:-50000}:0"
   volumes:
     - ${AIRFLOW_PROJ_DIR:-.}/output:/opt/airflow/output
 

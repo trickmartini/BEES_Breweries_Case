@@ -6,10 +6,6 @@ RUN apt-get update && \
     apt-get install -y openjdk-17-jdk && \
     apt-get clean
 
-# Set JAVA_HOME environment variable
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-arm64
-ENV PATH="${JAVA_HOME}/bin:${PATH}"
-
 # Switch back to the airflow user for further installations
 USER airflow
 
